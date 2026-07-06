@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nevhodné pro HR</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap');
+
+        :root {
+            --zlato: #DCBE5C;
+            --tmavy-kov: #3B3B3B;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.77), rgba(0, 0, 0, 0.77)),
+                repeating-linear-gradient(
+                    45deg,
+                    #080238,
+                    #080238 20px,
+                    #191345 20px,
+                    #191345 40px
+                );
+            box-shadow: inset 0 0 150px rgba(0,0,0,0.9);
+            
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .solid-lista {
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+                linear-gradient(to bottom, #545454 0%, #3B3B3B 35%, #222222 100%);
+            box-shadow: 0 4px 25px rgba(0,0,0,0.9);
+            border-bottom: 2px solid rgba(220, 190, 92, 0.2); 
+        }
+        
+        footer.solid-lista {
+            border-bottom: none;
+            border-top: 2px solid rgba(220, 190, 92, 0.2);
+        }
+
+        header {
+            height: 165px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        h1 {
+            font-family: 'Alex Brush', cursive;
+            font-size: 5.5rem; 
+            margin: 0;
+            width: 100%;
+            text-align: center;
+            color: var(--zlato);
+            background: var(--zlato);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: var(--zlato);
+            transition: all 0.3s ease;
+        }
+
+        .sweep-active {
+            background: linear-gradient(
+                120deg, 
+                var(--zlato) 0%, 
+                var(--zlato) 45%, 
+                #ffffff 50%, 
+                var(--zlato) 55%, 
+                var(--zlato) 100%
+            );
+            background-size: 250% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shineSweep 3s linear forwards;
+        }
+
+        @keyframes shineSweep {
+            0% { background-position: 150% center; }
+            100% { background-position: -50% center; }
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            padding: 40px 25px; 
+            justify-content: space-between; 
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .buttons-column {
+            display: flex;
+            flex-direction: column;
+            gap: 35px; 
+            width: 320px;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(220, 190, 92, 0.2); 
+            border-radius: 50px;
+            padding: 17px;
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--zlato);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .glass-btn:hover, .glass-btn.active-btn {
+            background: #ffffff;
+            border: 1px solid rgba(220, 190, 92, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(220, 190, 92, 0.6);
+            color: #222222; 
+            text-shadow: none; 
+        }
+
+        .middle-column {
+            flex: 1;
+            position: relative;
+            height: 740px;
+            overflow: hidden; 
+        }
+
+        .content-container {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 10px;
+            padding: 40px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 35px rgba(0,0,0,0.5);
+            
+            opacity: 0;
+            transform: translateX(100%); 
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+
+        .content-container.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .content-text h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--zlato);
+            font-size: 2.2rem;
+            margin-top: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .content-text p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #dddddd;
+            margin-bottom: 25px;
+        }
+
+        .content-text ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+        }
+
+        .content-text li {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 25px;
+            color: #ffffff;
+        }
+
+        .content-text li::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: var(--zlato);
+            font-weight: bold;
+        }
+
+        .content-container::-webkit-scrollbar { width: 6px; }
+        .content-container::-webkit-scrollbar-track { background: transparent; }
+        .content-container::-webkit-scrollbar-thumb {
+            background: rgba(220, 190, 92, 0.3);
+            border-radius: 10px;
+        }
+        .content-container::-webkit-scrollbar-thumb:hover { background: var(--zlato); }
+
+        /* VIZITKA */
+        .card-container {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .credit-card {
+            width: 650px; 
+            height: 403px; 
+            background: linear-gradient(135deg, #181818, #050505);
+            border: 1px solid rgba(220, 190, 92, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 35px 60px rgba(0,0,0,0.9), inset 0 0 25px rgba(220, 190, 92, 0.05);
+            padding: 45px;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden; 
+            
+            opacity: 0;
+            transform: translateY(100%); 
+            transition: all 2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .card-container.active .credit-card {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .card-dollar-chains {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            top: -25%;
+            left: -25%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 60px; 
+            transform: rotate(-32deg); 
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.06; 
+        }
+
+        .chain {
+            display: flex;
+            justify-content: center;
+            gap: 40px; 
+            width: 100%;
+        }
+
+        .chain span {
+            font-size: 5rem;
+            color: var(--zlato);
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            transform: rotate(32deg); 
+            display: inline-block;
+        }
+
+        .card-content-wrapper {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-chip {
+            width: 65px; 
+            height: 50px; 
+            background: linear-gradient(135deg, #d4af37, #aa7c11);
+            border-radius: 8px;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.5), 0 5px 10px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .card-chip::after {
+            content: '';
+            position: absolute;
+            top: 20px; left: 0; right: 0; height: 1px; 
+            background: rgba(0,0,0,0.4);
+            box-shadow: 0 15px 0 rgba(0,0,0,0.4);
+        }
+
+        .card-king {
+            position: absolute;
+            top: -10px; 
+            right: -5px; 
+            font-size: 130px; 
+            color: #f5f5f5; 
+            text-shadow: 0 0 5px var(--zlato), 0 0 25px rgba(220, 190, 92, 0.5); 
+            z-index: 2;
+        }
+
+        .card-middle {
+            margin-top: 20px;
+        }
+
+        .card-number {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.8rem; 
+            color: #ffffff;
+            letter-spacing: 4px;
+            text-shadow: 0 3px 8px rgba(0,0,0,0.9);
+            font-weight: 600;
+        }
+
+        .card-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: -10px;
+        }
+
+        .card-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            color: #888888;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .card-name {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.3rem; 
+            color: #dddddd;
+            letter-spacing: 1px;
+            text-transform: lowercase;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+        }
+
+        .card-exp {
+            font-family: 'Montserrat', sans-serif;
+            text-align: right;
+            color: #ffffff;
+            font-size: 1.6rem; 
+            font-weight: 600;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+        }
+
+        .card-exp span {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--zlato);
+            letter-spacing: 1px;
+        }
+
+        .photo-container {
+            width: 600px;
+            height: 740px;
+            border: 2px solid #3B3B3B;
+            background-color: rgba(0,0,0,0.6);
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+            z-index: 5; 
+        }
+
+        .photo-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: calc(100% + 80px); 
+            object-fit: cover;
+            margin-top: -80px;
+            transition: opacity 1.5s ease-in-out; 
+        }
+
+        .img-front { opacity: 1; z-index: 2; }
+        .img-back { opacity: 0; z-index: 1; }
+
+        .photo-container.swapped .img-front { opacity: 0; }
+        .photo-container.swapped .img-back { opacity: 1; z-index: 3; }
+
+        footer {
+            height: 50px; 
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: bold;
+            font-size: 1rem;
+            z-index: 10;
+        }
+
+        .stat-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #eeeeee; 
+        }
+
+        .stat-value {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 2px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="solid-lista">
+        <h1 id="signature">Artur Kaiser Junior</h1>
+    </header>
+
+    <main>
+        <div class="buttons-column">
+            <a href="#" class="glass-btn" data-target="kdojsem">Kdo jsem ?</a>
+            <a href="#" class="glass-btn" data-target="zasebou">Co mám za sebou</a>
+            <a href="#" class="glass-btn" data-target="prace">Práce, kterou hledám</a>
+            <a href="#" class="glass-btn" data-target="silne">Mé silné stránky</a>
+            <a href="#" class="glass-btn" data-target="vizitka">Vizitka</a>
+            <a href="#" class="glass-btn" data-target="zaver">Závěr</a>
+        </div>
+
+        <div class="middle-column">
+            <div class="content-container" id="contentBox">
+                <div class="content-text" id="contentTextDiv"></div>
+            </div>
+            
+            <div class="card-container" id="cardBox">
+                <div class="credit-card">
+                    <div class="card-dollar-chains">
+                        <div class="chain">
+                            <span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span>
+                        </div>
+                        <div class="chain">
+                            <span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span>
+                        </div>
+                        <div class="chain">
+                            <span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card-king">&#9812;</div>
+                    <div class="card-content-wrapper">
+                        <div class="card-chip"></div>
+                        <div class="card-middle">
+                            <div class="card-label">Číslo karty</div>
+                            <div class="card-number">+420 799 919 042</div>
+                        </div>
+                        <div class="card-bottom">
+                            <div>
+                                <div class="card-label">Držitel karty</div>
+                                <div class="card-name">artur.kaiser.fs@gmail.com</div>
+                            </div>
+                            <div class="card-exp"><span>Dostupný od</span><br>16:00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="photo-container" id="photoArea">
+            <img src="fotky/me.fix.png" alt="Artur Kaiser Junior 1" class="photo-img img-front">
+            <img src="fotky/me.fix2.png" alt="Artur Kaiser Junior 2" class="photo-img img-back">
+        </div>
+    </main>
+
+    <footer class="solid-lista">
+        <div class="stat-box">
+            <span>Web je live:</span>
+            <span class="stat-value" id="uptime">00:00:00:00</span>
+        </div>
+        <div class="stat-box">
+            <span>Zobrazení webu:</span>
+            <span class="stat-value">0</span>
+        </div>
+        <div class="stat-box">
+            <span>Zájemci o kontakt:</span>
+            <span class="stat-value" id="contactCounter">0</span>
+        </div>
+    </footer>
+
+    <script>
+        const texts = {
+            'kdojsem': `
+                <h2>Kdo jsem ?</h2>
+                <p>To je dobrá otázka.</p>
+                <ul>
+                    <li>Jsem rozvážný, ale nebojím se riskovat. Jen musí výhra odpovídat riziku.</li>
+                    <li>Jsem dříč, co nechce zastavovat.</li>
+                    <li>Jsem člověk, co se radši bude učit deset věcí najednou, než aby se nudil.</li>
+                    <li>Jsem člověk, co řeší problémy.</li>
+                    <li>Jsem člověk, co se neučil v lavici, ale praxí a drillem.</li>
+                    <li>Jsem přesně ten člověk, kterého pošlete a vyřeší cokoliv.</li>
+                </ul>
+                <p>Pokud nemám informace, zajistím si je. Pokud nemám znalosti, mám telefon – a ne na videohry. Pokud potřebuju udělat web? Poradím si, i když řádek kódu nenapíšu.</p>
+                <p>Uvědomuju si, v jakém století žiju. V době, kdy máme nespočet nástrojů na všechno, není takový problém si najít adekvátní nástroj a rychlý návod. S tímto přístupem jsem schopen řešit prakticky vše.</p>
+            `,
+            'zasebou': `
+                <h2>Co mám za sebou ?</h2>
+                <p>Dle svého měřítka toho za sebou ještě tolik nemám, avšak zběžně to, co jsem za svůj život už stihl mít na starosti:</p>
+                <ul>
+                    <li>Manager umělecké výstavy</li>
+                    <li>Vedoucí odbavovacího centra pro malou TV</li>
+                    <li>Asistence v produkci při natáčení televizních pořadů</li>
+                    <li>Asistence v produkci při hudebních festivalech</li>
+                    <li>Asistent techniky při natáčení televizních soutěží</li>
+                    <li>Výpomoc na stavbě</li>
+                    <li>Prodej suvenýrů</li>
+                </ul>
+                <p>Jak říkám, není toho za mnou tolik, ale rozhodně bych neřekl, že pořád stojím na startovací čáře.</p>
+            `,
+            'prace': `
+                <h2>Práce, kterou hledám</h2>
+                <p>Jak jsem už zmínil, rád řeším problémy. Téměř jakéhokoliv druhu.</p>
+                <p>Zatímco většina lidí hledá pohodlnou práci, kde si odsedí svých 6 nebo 8 hodin, já hledám primárně 12hodinovésměny.</p>
+                <p>Co taktéž preferuji, jsou noční provozy. Lidé na vyšších pozicích mi určitě dají za pravdu, že v noci se toho může pokazit opravdu hodně. A přesně tehdy to chce zodpovědné lidi, kteří nespustí oči z provozů, jež musí fungovat jako švýcarské hodinky.</p>
+            `,
+            'silne': `
+                <h2>Mé silné stránky</h2>
+                <ul>
+                    <li>Chladná, pragmatická mysl.</li>
+                    <li>Rychle se učím a adaptuju.</li>
+                    <li>Svoji práci odvedu a dodělám i s teplotou. Nenechám tým na holičkách.</li>
+                    <li>Umím fungovat za běhu. Nepotřebuju hodiny na to, abych se rozmyslel nebo pochopil triviální úkoly.</li>
+                    <li>Dokážu komunikovat přesně tak, jak si to situace vyžaduje.</li>
+                    <li>Jsem kreativní. Přemýšlím mimo zajeté normy a postupy, avšak pokud je to dáno, striktně se jimi řídím.</li>
+                    <li>Pokud mám nějaký úkol, přistupuju k němu vždy s nejvyšší prioritou.</li>
+                    <li>Dokážu komunikovat s kýmkoliv, v jakékoliv věkové kategorii a téměř z jakékoliv profese.</li>
+                    <li>Taktéž disponuji řidičským oprávněním a autem.</li>
+                </ul>
+            `,
+            'zaver': `
+                <h2>Závěr</h2>
+                <p>Na závěr bych chtěl jen říct, že tento web není pro „HR specialisty“, kteří mají na všechno tabulky, kolonky a dvě stě originálních behaviorálních otázek typu „kde se vidíte za pět let“. Pro ně jsem tohle nedělal. Dělal jsem to pro lidi, co vedou – pro ty, kteří reálně rozhodují.</p>
+                <p>Aniž bych uměl programovat, aniž bych měl cár papíru, který by o mně tvrdil, že alespoň nějak rozumím designu, tak jsem udělal tenhle web za pomocí nástrojů, co má téměř každý k dispozici.</p>
+                <ul>
+                    <li>Jak dlouho to trvalo? 4 hodiny.</li>
+                    <li>Kolik verzí vzniklo, než vše bylo tak, jak jsem chtěl? 27.</li>
+                    <li>Vyplatilo se to? To mi řekněte vy.</li>
+                </ul>
+                <p>Vím, kdo jsem, a vím, že dokážu dřít víc, než si většina v mém věku vůbec dokáže představit. Na to si klidně vsadím. Otázka je, jestli mi nevěříte stejným dílem, jako já věřím sobě.</p>
+                <p>Na originální otázku celé HR divize – kde se vidím za pět let? Nevím. Ale je mi jasné, že budu řešit problémy, co udělal někdo jiný, a že to po nich budu uklízet.</p>
+            `
+        };
+
+        const launchDate = new Date().getTime(); 
+        const signatureElement = document.getElementById('signature');
+        const photoArea = document.getElementById('photoArea');
+        const contentBox = document.getElementById('contentBox');
+        const contentTextDiv = document.getElementById('contentTextDiv');
+        const cardBox = document.getElementById('cardBox');
+        const buttons = document.querySelectorAll('.glass-btn[data-target]');
+        const contactCounter = document.getElementById('contactCounter');
+        
+        let zájemciCount = 0;
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = btn.getAttribute('data-target');
+                const isCurrentlyActive = btn.classList.contains('active-btn');
+                
+                const anythingActive = contentBox.classList.contains('active') || cardBox.classList.contains('active');
+
+                buttons.forEach(b => b.classList.remove('active-btn'));
+                
+                if (isCurrentlyActive) {
+                    contentBox.classList.remove('active');
+                    cardBox.classList.remove('active');
+                    return;
+                }
+
+                btn.classList.add('active-btn');
+                contentBox.classList.remove('active');
+                cardBox.classList.remove('active');
+
+                const delay = anythingActive ? 800 : 0;
+
+                setTimeout(() => {
+                    if (target === 'vizitka') {
+                        cardBox.classList.add('active');
+                        zájemciCount++;
+                        contactCounter.innerText = zájemciCount;
+                    } else {
+                        contentTextDiv.innerHTML = texts[target];
+                        contentBox.classList.add('active');
+                    }
+                }, delay);
+            });
+        });
+
+        function updateUptime() {
+            const now = new Date().getTime();
+            const difference = now - launchDate;
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            const display = 
+                String(days).padStart(2, '0') + "d : " +
+                String(hours).padStart(2, '0') + "h : " +
+                String(minutes).padStart(2, '0') + "m : " +
+                String(seconds).padStart(2, '0') + "s";
+
+            document.getElementById("uptime").innerText = display;
+
+            if (seconds === 0) {
+                photoArea.classList.toggle('swapped');
+                signatureElement.classList.add('sweep-active');
+                setTimeout(() => {
+                    signatureElement.classList.remove('sweep-active');
+                }, 3000);
+            }
+        }
+
+        setInterval(updateUptime, 1000);
+        updateUptime();
+    </script>
+</body>
+</html>
