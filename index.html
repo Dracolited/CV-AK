@@ -503,7 +503,7 @@
         </div>
         <div class="stat-box">
             <span>Zobrazení webu:</span>
-            <span class="stat-value">0</span>
+            <span class="stat-value" id="viewCounter">0</span>
         </div>
         <div class="stat-box">
             <span>Zájemci o kontakt:</span>
@@ -544,7 +544,7 @@
             'prace': `
                 <h2>Práce, kterou hledám</h2>
                 <p>Jak jsem už zmínil, rád řeším problémy. Téměř jakéhokoliv druhu.</p>
-                <p>Zatímco většina lidí hledá pohodlnou práci, kde si odsedí svých 6 nebo 8 hodin, já hledám primárně 12hodinovésměny.</p>
+                <p>Zatímco většina lidí hledá pohodlnou práci, kde si odsedí svých 6 nebo 8 hodin, já hledám primárně 12hodinové směny.</p>
                 <p>Co taktéž preferuji, jsou noční provozy. Lidé na vyšších pozicích mi určitě dají za pravdu, že v noci se toho může pokazit opravdu hodně. A přesně tehdy to chce zodpovědné lidi, kteří nespustí oči z provozů, jež musí fungovat jako švýcarské hodinky.</p>
             `,
             'silne': `
@@ -575,7 +575,8 @@
             `
         };
 
-        const launchDate = new Date().getTime(); 
+        const launchDate = new Date('2026-07-06T22:00:00').getTime(); 
+
         const signatureElement = document.getElementById('signature');
         const photoArea = document.getElementById('photoArea');
         const contentBox = document.getElementById('contentBox');
@@ -583,8 +584,16 @@
         const cardBox = document.getElementById('cardBox');
         const buttons = document.querySelectorAll('.glass-btn[data-target]');
         const contactCounter = document.getElementById('contactCounter');
-        
-        let zájemciCount = 0;
+        const viewCounter = document.getElementById('viewCounter');
+
+        let viewsCount = localStorage.getItem('cv_views') || 0;
+        let zájemciCount = localStorage.getItem('cv_clicks') || 0;
+
+        viewsCount++;
+        localStorage.setItem('cv_views', viewsCount);
+
+        viewCounter.innerText = viewsCount;
+        contactCounter.innerText = zájemciCount;
 
         buttons.forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -612,6 +621,7 @@
                     if (target === 'vizitka') {
                         cardBox.classList.add('active');
                         zájemciCount++;
+                        localStorage.setItem('cv_clicks', zájemciCount);
                         contactCounter.innerText = zájemciCount;
                     } else {
                         contentTextDiv.innerHTML = texts[target];
@@ -638,7 +648,7 @@
 
             document.getElementById("uptime").innerText = display;
 
-            if (seconds === 0) {
+            if (seconds === 0 && days === 0 && hours === 0 && minutes === 0) {
                 photoArea.classList.toggle('swapped');
                 signatureElement.classList.add('sweep-active');
                 setTimeout(() => {
