@@ -490,6 +490,7 @@
             </div>
         </div>
 
+        <!-- Ujisti se, že tady máš správné fotky. Me.fix a me.fix2 jsi řešil předtím. -->
         <div class="photo-container" id="photoArea">
             <img src="fotky/me.fix.png" alt="Artur Kaiser Junior 1" class="photo-img img-front">
             <img src="fotky/me.fix2.png" alt="Artur Kaiser Junior 2" class="photo-img img-back">
@@ -583,17 +584,33 @@
         const contentTextDiv = document.getElementById('contentTextDiv');
         const cardBox = document.getElementById('cardBox');
         const buttons = document.querySelectorAll('.glass-btn[data-target]');
+        
         const contactCounter = document.getElementById('contactCounter');
         const viewCounter = document.getElementById('viewCounter');
 
-        let viewsCount = localStorage.getItem('cv_views') || 0;
-        let zájemciCount = localStorage.getItem('cv_clicks') || 0;
+        // UNIKÁTNÍ IDENTIFIKÁTOR TVÉHO WEBU PRO API DATABÁZI
+        const namespace = 'arturkaiser-cv-2607';
 
-        viewsCount++;
-        localStorage.setItem('cv_views', viewsCount);
+        // 1. ZOBRAZENÍ WEBU - Odeslání globálního +1 do API na každé načtení stránky
+        fetch(`https://api.counterapi.dev/v1/${namespace}/views/up`)
+            .then(res => res.json())
+            .then(data => {
+                viewCounter.innerText = data.count;
+            })
+            .catch(err => {
+                console.log('Chyba počítadla zobrazení:', err);
+                viewCounter.innerText = "Error"; // Fallback kdyby API server spadl
+            });
 
-        viewCounter.innerText = viewsCount;
-        contactCounter.innerText = zájemciCount;
+        // 2. ZÁJEMCI O KONTAKT - Načtení stávajícího čísla při startu (BEZ přidávání)
+        fetch(`https://api.counterapi.dev/v1/${namespace}/clicks`)
+            .then(res => res.json())
+            .then(data => {
+                contactCounter.innerText = data.count || 0;
+            })
+            .catch(err => {
+                contactCounter.innerText = "0";
+            });
 
         buttons.forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -620,9 +637,15 @@
                 setTimeout(() => {
                     if (target === 'vizitka') {
                         cardBox.classList.add('active');
-                        zájemciCount++;
-                        localStorage.setItem('cv_clicks', zájemciCount);
-                        contactCounter.innerText = zájemciCount;
+                        
+                        // ZÁJEMCI O KONTAKT - Odeslání +1 do API při stisknutí tlačítka Vizitka
+                        fetch(`https://api.counterapi.dev/v1/${namespace}/clicks/up`)
+                            .then(res => res.json())
+                            .then(data => {
+                                contactCounter.innerText = data.count;
+                            })
+                            .catch(err => console.log('Chyba počítadla vizitky:', err));
+
                     } else {
                         contentTextDiv.innerHTML = texts[target];
                         contentBox.classList.add('active');
@@ -648,7 +671,7 @@
 
             document.getElementById("uptime").innerText = display;
 
-            // OPRAVENÁ PODMÍNKA: Kontrola pouze vteřin, aby to běželo každou minutu napořád
+            // Efekt běží každou celou minutu
             if (seconds === 0) {
                 photoArea.classList.toggle('swapped');
                 signatureElement.classList.add('sweep-active');
