@@ -648,7 +648,8 @@
 
             document.getElementById("uptime").innerText = display;
 
-            if (seconds === 0 && days === 0 && hours === 0 && minutes === 0) {
+            // OPRAVENÁ PODMÍNKA: Kontrola pouze vteřin, aby to běželo každou minutu napořád
+            if (seconds === 0) {
                 photoArea.classList.toggle('swapped');
                 signatureElement.classList.add('sweep-active');
                 setTimeout(() => {
