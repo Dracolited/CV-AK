@@ -105,7 +105,7 @@
         .buttons-column {
             display: flex;
             flex-direction: column;
-            gap: 35px; 
+            gap: 30px; 
             width: 320px;
             flex-shrink: 0;
             z-index: 10;
@@ -212,6 +212,59 @@
             color: var(--zlato);
             font-weight: bold;
         }
+
+        .motto {
+            font-style: italic;
+            color: var(--zlato) !important;
+            border-left: 3px solid var(--zlato);
+            padding-left: 15px;
+            margin-top: 30px;
+        }
+
+        /* --- STYLY PRO HR PODMENU --- */
+        .hr-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(220, 190, 92, 0.2);
+            padding-bottom: 15px;
+        }
+
+        .hr-btn {
+            background: rgba(220, 190, 92, 0.05);
+            border: 1px solid rgba(220, 190, 92, 0.5);
+            color: var(--zlato);
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        .hr-btn:hover, .hr-btn.active-sub {
+            background: var(--zlato);
+            color: #111;
+            box-shadow: 0 0 15px rgba(220, 190, 92, 0.4);
+        }
+
+        .hr-content-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .hr-content-section.active-subcontent {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* -------------------------- */
 
         .content-container::-webkit-scrollbar { width: 6px; }
         .content-container::-webkit-scrollbar-track { background: transparent; }
@@ -450,6 +503,7 @@
             <a href="#" class="glass-btn" data-target="silne">Mé silné stránky</a>
             <a href="#" class="glass-btn" data-target="vizitka">Vizitka</a>
             <a href="#" class="glass-btn" data-target="zaver">Závěr</a>
+            <a href="#" class="glass-btn" data-target="prohr">Pro HR</a>
         </div>
 
         <div class="middle-column">
@@ -515,8 +569,14 @@
         const texts = {
             'kdojsem': `
                 <h2>Kdo jsem?</h2>
-                <p>Jsem člověk, kterého zavoláte, když potřebujete vyřešit problém. Jsem rozvážný, ale nebojím se jít do rizika, pokud tomu odpovídá výsledek. Raději se budu za běhu učit deset nových věcí, než abych někde tiše proseděl den. Neformovala mě školní lavice, ale tvrdá praxe a dril.</p>
-                <p>Pokud mi chybí informace, obratem si je zajistím. Pokud potřebuji postavit web a neumím kódovat, najdu si adekvátní nástroj a prostě to udělám. Žijeme v době, kdy chybějící znalost není omluva, ale jen další úkol k vyřešení.</p>
+                <p>Jsem člověk, kterého zavoláte, když potřebujete vyřešit problém.</p>
+                <ul>
+                    <li><strong>Jsem rozvážný, ale nebojím se jít do rizika, pokud to má smysl.</strong></li>
+                    <li><strong>Raději se budu za běhu učit deset nových věcí, než abych někde tiše proseděl den.</strong></li>
+                    <li><strong>Neformovala mě školní lavice, ale tvrdá praxe a dril.</strong></li>
+                    <li><strong>Pokud mi chybí informace, obratem si je zajistím. Pokud potřebuji postavit web a neumím kódovat, najdu si adekvátní nástroj a prostě to udělám.</strong></li>
+                </ul>
+                <p class="motto">Moje osobní motto: Žijeme v době, kdy chybějící znalost není omluva, ale jen další úkol k vyřešení.</p>
             `,
             'zasebou': `
                 <h2>Co mám za sebou?</h2>
@@ -548,6 +608,149 @@
                 <p>Tento web jsem postavil za 4 hodiny pomocí běžně dostupných nástrojů. Proběhlo 30 iterací, než to bylo podle mých představ.</p>
                 <p>Znám svou hodnotu a vím, že dokážu dřít s nasazením, které je pro většinu lidí nepředstavitelné.</p>
                 <p>A na oblíbenou otázku HR – kde se vidím za pět let? Nevím. Ale je mi jasný, že budu řešit problémy, které způsobil někdo jiný.</p>
+            `,
+            'prohr': `
+                <div class="hr-nav">
+                    <button class="hr-btn active-sub" data-sub="hr-resil">Co jsem musel řešit?</button>
+                    <button class="hr-btn" data-sub="hr-hacek">Kde je háček?</button>
+                    <button class="hr-btn" data-sub="hr-volno">Jak trávím své volno</button>
+                    <button class="hr-btn" data-sub="hr-culture">Můj Culture Fit</button>
+                </div>
+                
+                <div id="hr-resil" class="hr-content-section active-subcontent">
+                    <h2>Co jsem musel řešit v praxi?</h2>
+                    <p>V této sekci bych chtěl zmínit pár svých vzpomínek na konkrétní problémy, které jsem musel reálně vyřešit.</p>
+                    
+                    <ul>
+                        <li style="margin-bottom: 25px;">
+                            <strong>1. Z runnera na technika za T-15 minut</strong><br>
+                            Když se natáčela jedna vědomostní soutěž, bylo to hezky vymyšlené: soutěžící ve dvou týmech, moderátoři přečtou otázku a pak každý odpoví na tabletu. Jen tak nějak nikdo nevymyslel, v čem budou odpovídat. Nebyl žádný software ani aplikace. Byl jsem tehdy součástí štábu jako runner, někdo, kdo má rychlé nohy a rychlou hlavu. Software ale nebyl a vedení vyslovilo – nebál bych se to nazvat – kouzelnou formuli: <em>„Arture, vyřeš to.“</em><br><br>
+                            Neměl jsem žádné info, nevěděl jsem, kdo co pokazil či opomenul, nevěděl jsem ani, co za tablety to je, nebo jestli máme na place Wi-Fi. Na celkový fix jsem potřeboval něco okolo 20 minut. Během minuty jsem s asistencí a lehkou dirigencí úkolů nainstaloval do všech tabletů Kahoot. Během instalace jsem vedení založil účet a navigoval je, co mají koupit. Během toho se už rychle vytvářely kvízové otázky. Po zbytek natáčení jsem měl na starosti jen tablety, které jsem po prvním dni kapku přenastavil, aby se permanentně nezamykaly.
+                        </li>
+
+                        <li style="margin-bottom: 25px;">
+                            <strong>2. Zpožděné tabulky a chyba v tisku</strong><br>
+                            Při umělecké výstavě dorazily tabulky s názvem díla a autorem pozdě. Sice to nebyl nijak závažný problém, ale z dobré vůle jsem si přibral práci. Tabulky dorazily vážně na poslední chvíli, a tak jsem se toho ujal a přišroubovával jsem je k jednotlivým dílům. Bylo jich zhruba 46 kusů. Vtipné ale bylo, když se objevila chyba a zas bylo vyřčeno zaklínadlo: <em>„Vyřeš to.“</em><br><br>
+                            Není problém. Spojil jsem se s grafikem, co ty tabulky zpracovával, aby mi co nejdříve poslal opravenou verzi na mail, a zároveň i s člověkem, co nám ty tabulky vyráběl, ať o tom ví. Následně jsem opravenou verzi vytiskl a přelepil s ní původní chybnou tabulku. Esteticky to za mě nebylo ideální, ale vedení řeklo: <em>„V pohodě, dál to neřeš.“</em>
+                        </li>
+
+                        <li style="margin-bottom: 25px;">
+                            <strong>3. „Mohl bys ještě dojet pro...?“</strong><br>
+                            Jako poslední nezmíním vyloženě „problém“ či chybu, ale spíš jen často se opakující žádost. Když se nenatáčelo v terénu, ale v budově, tak se čas od času, párkrát do měsíce, stalo, že když jsem odcházel domů nebo na home office, dostal jsem prosbu: <em>„Mohl bys teď dojet pro něho?“</em> či <em>„Mohl bys teď dojet pro tohle?“</em><br><br>
+                            Nemusel jsem to řešit, nebyla to moje divize a ani můj problém, ale byli jsme na stejné lodi. A tak jsem to udělal.
+                        </li>
+                    </ul>
+                </div>
+                
+                <div id="hr-hacek" class="hr-content-section">
+                    <h2>Kde je ten háček?</h2>
+                    <p>Předpokládám, že při čtení mého profilu vám v hlavě vyskočil varovný signál s nápisem „rychlé vyhoření“. Je to z pohledu personalistiky logická a oprávněná obava. Rád bych proto dodal kontext k tomu, proč je můj výkon dlouhodobě udržitelný.</p>
+                    
+                    <p>V mém posledním zaměstnání jsem strávil 4 roky. Abych udržel provoz v chodu, byl jsem v práci 363 dní v roce (s výjimkou Vánoc a narozenin). Fungoval jsem v extrémně asymetrickém provozu – některé týdny vyžadovaly 3hodinové zásahy, jiné znamenaly 20hodinové směny (byť s občasnými krátkými pauzami), které byly permanentně spojené s 24/7 telefonickou pohotovostí pro řešení kritických incidentů.</p>
+                    
+                    <p>Dlouhodobě se to dalo zvládnout díky třem faktorům:</p>
+                    
+                    <ul>
+                        <li><strong>Mentální hygiena (Meditace):</strong> Za svůj život mám odmeditováno více než 1 000 hodin. Mám nad svou psychikou plnou kontrolu a umím vědomě pracovat s dopaminem. Stres u mě nespouští paniku, je to jen další proměnná k vyřešení.</li>
+                        <li><strong>Hluboká regenerace:</strong> Pokud zrovna nejsem v pohotovosti, umím dokonale vypnout. Nemám problém spát 13 hodin v kuse a dle chytrých hodinek si udržuji kvalitu spánku mezi 85 % až 93 %, což mi zajišťuje rychlou fyzickou obnovu.</li>
+                        <li><strong>Kofein:</strong> Třetí věc, díky které jsem držel takové tempo, byl kofein. Tím nemyslím jednu, dvě nebo pět káv denně, myslím tím opravdu obrovské množství energetických nápojů. S energiťáky jsem ale před rokem sekl. Ne proto, že by mě to semlelo nebo mi to způsobilo nějaké zdravotní komplikace, to naštěstí ne. Jen jsem se ze vteřiny na vteřinu rozhodl, že už na to kašlu. Jak jsem řekl, tak jsem udělal, a od té doby jsem neměl ani kapku.</li>
+                    </ul>
+
+                    <p><strong>Můj reálný limit: Biologické hodiny</strong><br>
+                    Nejsem stroj a mám své prokazatelné limity. Tím hlavním je, že v dopoledních hodinách se moje efektivita pohybuje pouze kolem 50 až 60 %. Můj biorytmus je synchronizovaný spíše s tokijským časem. Na ranní směny mohu být slabší, ale pro odpolední a hlavně pro noční směny dokážu být téměř bezkonkurenční, co se týče výkonu a nasazení.</p>
+
+                    <p><strong>Týmová práce a chybovost</strong><br>
+                    Jak jsem už v <strong>"Závěru"</strong> vyloženě napsal, za pět let budu řešit chyby po ostatních. Není to myšlené arogantně, jde o pochopení lidské psychologie. Lidé, kteří nejsou zvyklí na extrémní stres, v něm přirozeně chybují. Já jsem vůči stresu otupělý a dokážu vzniklé situace s chladnou hlavou stabilizovat.</p>
+                </div>
+
+                <div id="hr-volno" class="hr-content-section">
+                    <h2>Jak trávím své volno?</h2>
+                    <p>Když mám volno, často si vzpomenu na úvodní znělku z Phinease a Ferba: <em>„Volno máme, co s ním uděláme, to je můj jediný problém.“</em> Můj mozek totiž neumí úplně stát na místě.</p>
+                    
+                    <ul>
+                        <li style="margin-bottom: 25px;">
+                            <strong>🎮 Herní chill</strong><br>
+                            Když chci prostě jen vypnout, zapnu Minecraft, 7 Days to Die, GTA, nebo vezmu brokovnici a jdu si zaskákat do Fortnite.
+                        </li>
+                        
+                        <li style="margin-bottom: 25px;">
+                            <strong>💻 Apetit po znalostech</strong><br>
+                            Když můj apetit po znalostech nabyde, je na čase ho ukojit. Fascinuje mě, jak věci fungují pod povrchem. Rád zkoumám a analyzuji vše od tvrdých dat v psychologických studiích, přes termodynamiku a kyberbezpečnost (třeba komunikaci backendu s frontendem), až po umělou inteligenci a filozofii. Žádný informační systém pro mě není tabu.
+                        </li>
+                        
+                        <li style="margin-bottom: 25px;">
+                            <strong>🖋️ Kreativní únik</strong><br>
+                            No a když nemám náladu ani na jedno z toho? Tak prostě píšu. Vymýšlím vlastní povídky, fantasy světy nebo steampunková dobrodružství.
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="hr-culture" class="hr-content-section">
+                    <h2>Můj Culture Fit</h2>
+                    <p>Podle mě se toho o člověku dá spoustu zjistit z toho, jaké filmy, hudbu nebo seriály má rád. Tady je proto seznam mých oblíbených filmů:</p>
+                    
+                    <p><strong>1. Pohádky</strong></p>
+                    <ul>
+                        <li>Karlík a továrna na čokoládu (Charlie and the Chocolate Factory)</li>
+                        <li>Kniha života (The Book of Life)</li>
+                        <li>Encanto</li>
+                        <li>Coco</li>
+                        <li>Ježek Sonic (Sonic the Hedgehog)</li>
+                        <li>Hop</li>
+                        <li>Kouzelník ze země Oz (The Wizard of Oz)</li>
+                        <li>Mezi živly (Elemental)</li>
+                        <li>Kung Fu Panda</li>
+                        <li>Ukradené Vánoce (The Nightmare Before Christmas)</li>
+                        <li>VALL-I (WALL-E)</li>
+                    </ul>
+
+                    <p><strong>2. Akční</strong></p>
+                    <ul>
+                        <li>John Wick (1 a 2)</li>
+                        <li>Iron Man (všechny)</li>
+                        <li>Harry Potter (všechny)</li>
+                        <li>Spider-Man (všechny)</li>
+                        <li>Alita: Bojový anděl (Alita: Battle Angel)</li>
+                        <li>Všemocný (Limitless)</li>
+                        <li>Kingsman</li>
+                        <li>Old Guard: Nesmrtelní (The Old Guard)</li>
+                        <li>Avatar (všechny tři díly)</li>
+                        <li>Eragon</li>
+                        <li>Denní směna (Day Shift)</li>
+                    </ul>
+
+                    <p><strong>3. Romantické</strong></p>
+                    <ul>
+                        <li>Velký Gatsby (The Great Gatsby)</li>
+                        <li>Půlnoční láska (Midnight Sun)</li>
+                        <li>Padesátkrát a stále poprvé (50 First Dates)</li>
+                        <li>Zkus mě rozesmát (Just Go with It)</li>
+                        <li>Dovolená za trest (Blended)</li>
+                        <li>Chceš mě, chci tě (The Ugly Truth)</li>
+                    </ul>
+
+                    <p><strong>4. Komedie</strong></p>
+                    <ul>
+                        <li>Piráti z Karibiku (Pirates of the Caribbean)</li>
+                        <li>Free Guy</li>
+                        <li>Ready Player One</li>
+                        <li>Vražda na jachtě (Murder Mystery)</li>
+                        <li>Hubieho Halloween (Hubie Halloween)</li>
+                        <li>Božský Bruce (Bruce Almighty)</li>
+                        <li>Zase 17 (17 Again)</li>
+                        <li>Gulliverovy cesty (Gulliver's Travels)</li>
+                        <li>Maska (The Mask)</li>
+                        <li>Králové rokenrolu (Tenacious D in The Pick of Destiny)</li>
+                    </ul>
+
+                    <p><strong>5. Nekorektní Komedie</strong></p>
+                    <ul>
+                        <li>Bratři z Grimsby (The Brothers Grimsby)</li>
+                        <li>Vlk z Wall Street (The Wolf of Wall Street)</li>
+                        <li>Nevyhrožuj (Don't Be a Menace to South Central While Drinking Your Juice in the Hood)</li>
+                        <li>Terkel má problém (Terkel in Trouble)</li>
+                    </ul>
+                </div>
             `
         };
 
@@ -583,6 +786,17 @@
             .catch(err => {
                 contactCounter.innerText = "0";
             });
+
+        contentTextDiv.addEventListener('click', (e) => {
+            if (e.target.classList.contains('hr-btn')) {
+                document.querySelectorAll('.hr-btn').forEach(btn => btn.classList.remove('active-sub'));
+                document.querySelectorAll('.hr-content-section').forEach(sec => sec.classList.remove('active-subcontent'));
+                
+                e.target.classList.add('active-sub');
+                const targetId = e.target.getAttribute('data-sub');
+                document.getElementById(targetId).classList.add('active-subcontent');
+            }
+        });
 
         buttons.forEach(btn => {
             btn.addEventListener('click', (e) => {
