@@ -44,17 +44,16 @@
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             background-color: #f6f3ea; 
-            z-index: 0; /* Zůstává pod vším obsahem (header, main, footer) */
-            opacity: 0; /* Ve tmě je neviditelná */
+            z-index: 0; 
+            opacity: 0; 
             pointer-events: none;
             transition: opacity 1s ease;
         }
 
         body.light-theme::before {
-            opacity: 1; /* Plynule překryje tmavé pozadí i jeho stíny */
+            opacity: 1; 
         }
 
-        /* Zajištění, aby byl text a lišty nad tou světlou plachtou */
         header, main, footer {
             position: relative;
             z-index: 10;
@@ -66,7 +65,7 @@
             transition: background-color 1s ease, color 1s ease, box-shadow 1s ease, border-color 1s ease !important;
         }
 
-        /* --- SVĚTLÝ MOTIV (LIGHT THEME) BARVY TEXTŮ A LIŠT --- */
+        /* --- SVĚTLÝ MOTIV (LIGHT THEME) --- */
         body.light-theme {
             color: #333333;
             --lista-color: #f6f3ea; 
@@ -696,6 +695,106 @@
             letter-spacing: 2px;
         }
 
+        /* ========================================= */
+        /* --- MOBILNÍ VERZE (RESPONZIVITA) --- */
+        /* ========================================= */
+        
+        @media (max-width: 1200px) {
+            body, html {
+                height: auto;
+                min-height: 100vh;
+            }
+            main {
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 15px;
+                gap: 40px;
+            }
+            .buttons-column {
+                width: 100%;
+                max-width: 500px;
+            }
+            .middle-column {
+                width: 100%;
+                max-width: 700px;
+                height: 600px; /* Obsah se roluje uvnitř */
+            }
+            .photo-container {
+                width: 100%;
+                max-width: 500px;
+                height: 600px;
+                margin-top: 0;
+            }
+            .photo-img {
+                margin-top: 0;
+                height: 100%;
+            }
+            h1 {
+                font-size: 4rem;
+                padding: 0 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.8rem;
+                margin-top: 15px;
+                line-height: 1.2;
+            }
+            header {
+                flex-direction: column;
+                padding: 15px 0;
+                height: auto;
+                min-height: 100px;
+            }
+            .theme-toggle {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+            }
+            
+            .middle-column {
+                height: 500px;
+            }
+            .content-container {
+                padding: 25px 20px;
+            }
+            
+            /* Přeškálování kreditní karty na mobil přes VW */
+            .credit-card {
+                width: 90vw;
+                height: 56vw;
+                padding: 5vw;
+                border-radius: 4vw;
+            }
+            .card-number { font-size: 6vw; letter-spacing: 2px; }
+            .card-king { font-size: 20vw; right: -2vw; top: -2vw; }
+            .card-name { font-size: 3.5vw; }
+            .card-exp { font-size: 4vw; }
+            .card-exp span { font-size: 2vw; }
+            .card-chip { width: 12vw; height: 9vw; }
+            .chain span { font-size: 10vw; gap: 5vw; }
+            
+            /* Přeškálování textového kontaktu */
+            .contact-plain {
+                width: 90%;
+                padding: 30px 20px;
+            }
+            .contact-plain h2 { font-size: 2rem; }
+            .contact-plain p { font-size: 1.1rem; }
+
+            /* Patička pod sebou */
+            footer {
+                flex-direction: column;
+                height: auto;
+                padding: 15px 0;
+                gap: 10px;
+            }
+            .stat-box { font-size: 0.9rem; }
+            .stat-value { font-size: 1.2rem; }
+        }
     </style>
 </head>
 <body class="light-theme">
@@ -722,7 +821,6 @@
             </div>
             
             <div class="card-container" id="cardBox">
-                <!-- Tmavý motiv: Kreditka -->
                 <div class="credit-card">
                     <div class="card-dollar-chains">
                         <div class="chain"><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span></div>
@@ -747,7 +845,6 @@
                     </div>
                 </div>
 
-                <!-- Světlý motiv: Textový kontakt -->
                 <div class="contact-plain">
                     <h2>Kontakt</h2>
                     <p><strong>Telefon:</strong> +420 799 919 042</p>
@@ -758,10 +855,10 @@
         </div>
 
         <div class="photo-container" id="photoArea">
-            <img src="fotky/me.fix.png" alt="Artur Dark 1" class="photo-img dark-img img-front" id="imgFrontDark">
-            <img src="fotky/me.fix2.png" alt="Artur Dark 2" class="photo-img dark-img img-back" id="imgBackDark">
-            <img src="fotky/me.light.png" alt="Artur Light 1" class="photo-img light-img img-front" id="imgFrontLight">
-            <img src="fotky/me.light2.png" alt="Artur Light 2" class="photo-img light-img img-back" id="imgBackLight">
+            <img src="fotky/me.fix.png" alt="Artur Dark 1" class="photo-img dark-img img-front">
+            <img src="fotky/me.fix2.png" alt="Artur Dark 2" class="photo-img dark-img img-back">
+            <img src="fotky/me.light.jpg" alt="Artur Light 1" class="photo-img light-img img-front">
+            <img src="fotky/me.light2.jpg" alt="Artur Light 2" class="photo-img light-img img-back">
         </div>
     </main>
 
@@ -996,10 +1093,10 @@
 
         // 100% BEZCHYBNÉ PŘEPÍNÁNÍ PŘES PROLNUTÍ (FADE-IN)
         themeToggle.addEventListener('click', () => {
-            // Vnutíme 1s transition na barvy a stíny celého webu
+            // Vnutíme 1s transition na barvy a stíny
             document.body.classList.add('theme-transition');
             
-            // Přepneme CSS témata
+            // Prohodíme třídu motivu
             document.body.classList.toggle('light-theme');
             const isLight = document.body.classList.contains('light-theme');
             
@@ -1013,7 +1110,7 @@
                 localStorage.setItem('cv_theme', 'dark');
             }
 
-            // Počkáme 1s na konec animace a třídu smažeme, aby nerušila zbytek webu (např. hover na tlačítkách)
+            // Počkáme 1s na konec animace a třídu smažeme, aby nerušila zbytek webu
             setTimeout(() => {
                 document.body.classList.remove('theme-transition');
             }, 1000);
