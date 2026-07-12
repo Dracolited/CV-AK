@@ -14,6 +14,7 @@
             --tmavy-kov: #3B3B3B;
         }
 
+        /* --- ZÁKLADNÍ DOM: LUXUSNÍ TMAVÉ POZADÍ JE ZPĚT --- */
         body, html {
             margin: 0;
             padding: 0;
@@ -32,11 +33,177 @@
                     #191345 40px
                 );
             box-shadow: inset 0 0 150px rgba(0,0,0,0.9);
-            
             color: white;
             overflow-x: hidden;
+            position: relative;
         }
 
+        /* --- SVĚTLÁ PLACHTA, KTERÁ PLYNULE PŘEKRYJE TMU --- */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #f6f3ea; 
+            z-index: 0; /* Zůstává pod vším obsahem (header, main, footer) */
+            opacity: 0; /* Ve tmě je neviditelná */
+            pointer-events: none;
+            transition: opacity 1s ease;
+        }
+
+        body.light-theme::before {
+            opacity: 1; /* Plynule překryje tmavé pozadí i jeho stíny */
+        }
+
+        /* Zajištění, aby byl text a lišty nad tou světlou plachtou */
+        header, main, footer {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* --- TRIK PRO PLYNULÉ 1s PROLNUTÍ TEXTŮ A TLAČÍTEK --- */
+        body.theme-transition, 
+        body.theme-transition * {
+            transition: background-color 1s ease, color 1s ease, box-shadow 1s ease, border-color 1s ease !important;
+        }
+
+        /* --- SVĚTLÝ MOTIV (LIGHT THEME) BARVY TEXTŮ A LIŠT --- */
+        body.light-theme {
+            color: #333333;
+            --lista-color: #f6f3ea; 
+        }
+
+        /* Shiny lišty */
+        body.light-theme .solid-lista {
+            background-color: var(--lista-color);
+            background-image: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 30%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.05) 100%);
+            box-shadow: 
+                0 4px 15px rgba(0,0,0,0.05), 
+                inset 0 1px 3px rgba(255,255,255,1), 
+                inset 0 -1px 3px rgba(0,0,0,0.05);
+            border: none;
+        }
+        body.light-theme header.solid-lista { border-bottom: none; }
+        body.light-theme footer.solid-lista { border-top: none; }
+
+        /* Shiny modrý nadpis */
+        body.light-theme h1 {
+            color: #25a6d9;
+            background: none;
+            -webkit-text-fill-color: #25a6d9;
+            text-shadow: 0 0 15px rgba(37, 166, 217, 0.5), 0 0 25px rgba(37, 166, 217, 0.3);
+        }
+        body.light-theme .sweep-active {
+            background: linear-gradient(120deg, #25a6d9 0%, #25a6d9 45%, #ffffff 50%, #25a6d9 55%, #25a6d9 100%);
+            background-size: 250% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
+            animation: shineSweep 3s linear forwards;
+        }
+
+        /* ----- UNIKÁTNÍ RGB SKUPINY PRO KAŽDÉ TLAČÍTKO VE SVĚTLÉM REŽIMU ----- */
+        body.light-theme .glass-btn[data-target="kdojsem"] { --c1: 255, 140, 66; --c2: 255, 60, 56; --c3: 108, 142, 173; }
+        body.light-theme .glass-btn[data-target="zasebou"] { --c1: 255, 188, 66; --c2: 216, 17, 89; --c3: 143, 45, 86; }
+        body.light-theme .glass-btn[data-target="prace"] { --c1: 247, 85, 144; --c2: 251, 216, 127; --c3: 16, 255, 203; }
+        body.light-theme .glass-btn[data-target="silne"] { --c1: 255, 191, 0; --c2: 34, 116, 165; --c3: 50, 147, 111; }
+        body.light-theme .glass-btn[data-target="vizitka"] { --c1: 121, 30, 148; --c2: 222, 100, 73; --c3: 64, 120, 153; }
+        body.light-theme .glass-btn[data-target="zaver"] { --c1: 0, 25, 255; --c2: 55, 255, 0; --c3: 225, 255, 0; }
+        body.light-theme .glass-btn[data-target="prohr"] { --c1: 50, 13, 109; --c2: 255, 212, 71; --c3: 112, 3, 83; }
+
+        body.light-theme .glass-btn {
+            background: #e1e1dc; 
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            color: #222222;
+            text-shadow: none;
+            box-shadow: 
+                -4px -4px 15px rgba(var(--c1), 0.25),  
+                4px 4px 15px rgba(var(--c2), 0.15);   
+        }
+
+        body.light-theme .glass-btn:hover, body.light-theme .glass-btn.active-btn {
+            background: #ffffff; 
+            border-color: rgba(var(--c1), 0.8);
+            color: #222222; 
+            transform: translateY(-2px);
+            box-shadow: 
+                -8px -8px 25px rgba(var(--c1), 0.55),
+                8px 8px 25px rgba(var(--c2), 0.45),
+                0 0 20px rgba(var(--c3), 0.5);
+        }
+
+        /* Přepsání textového pole a textů */
+        body.light-theme .content-container {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+        }
+        body.light-theme .content-text h2 { color: #25a6d9; }
+        body.light-theme .content-text p, 
+        body.light-theme .content-text li { color: #444444; }
+        body.light-theme .content-text li::before { color: #25a6d9; }
+        body.light-theme .motto {
+            color: #25a6d9 !important;
+            border-left-color: #25a6d9;
+        }
+        
+        /* Podmenu HR ve světlém módu */
+        body.light-theme .hr-btn {
+            border-color: rgba(37, 166, 217, 0.4);
+            color: #444;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: none;
+        }
+        body.light-theme .hr-btn:hover, body.light-theme .hr-btn.active-sub {
+            background: #25a6d9;
+            color: #fff;
+            box-shadow: 0 0 12px rgba(37, 166, 217, 0.4);
+        }
+        body.light-theme .hr-nav { border-bottom-color: rgba(37, 166, 217, 0.2); }
+
+        /* Patička ve světlém módu */
+        body.light-theme .stat-box { color: #555555; }
+        body.light-theme .stat-value { color: #111111; }
+        body.light-theme .content-container::-webkit-scrollbar-thumb { background: rgba(37, 166, 217, 0.3); }
+        body.light-theme .content-container::-webkit-scrollbar-thumb:hover { background: #25a6d9; }
+
+        /* Přepínání stylů kontaktů */
+        body.light-theme .credit-card { display: none; }
+        body.light-theme .contact-plain { display: flex; }
+
+        /* TLAČÍTKO PŘEPÍNAČE TÉMATU */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(220, 190, 92, 0.5);
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s ease;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        body.light-theme .theme-toggle {
+            border-color: #25a6d9;
+            background: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* --- PŮVODNÍ STYLY --- */
         .solid-lista {
             background: 
                 linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
@@ -69,7 +236,6 @@
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: var(--zlato);
-            /* ZDE BYL BUG: odstraněn transition: all 0.3s ease; */
         }
 
         .sweep-active {
@@ -221,7 +387,6 @@
             margin-top: 30px;
         }
 
-        /* --- STYLY PRO HR PODMENU --- */
         .hr-nav {
             display: flex;
             gap: 10px;
@@ -264,7 +429,6 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        /* -------------------------- */
 
         .content-container::-webkit-scrollbar { width: 6px; }
         .content-container::-webkit-scrollbar-track { background: transparent; }
@@ -274,7 +438,7 @@
         }
         .content-container::-webkit-scrollbar-thumb:hover { background: var(--zlato); }
 
-        /* VIZITKA */
+        /* KARTY A INFO */
         .card-container {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -298,13 +462,55 @@
             
             opacity: 0;
             transform: translateY(100%); 
-            transition: all 2s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .card-container.active .credit-card {
             opacity: 1;
             transform: translateY(0);
             pointer-events: auto;
+        }
+
+        /* Obyčejný textový kontakt pro světlý motiv */
+        .contact-plain {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(37, 166, 217, 0.3);
+            border-radius: 20px;
+            padding: 50px 80px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            
+            opacity: 0;
+            transform: translateY(100%); 
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .card-container.active .contact-plain {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .contact-plain h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            color: #25a6d9;
+            margin-top: 0;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .contact-plain p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            color: #444;
+            margin: 15px 0;
+        }
+        .contact-plain strong {
+            color: #25a6d9;
+            font-weight: 600;
         }
 
         .card-dollar-chains {
@@ -452,14 +658,17 @@
             height: calc(100% + 80px); 
             object-fit: cover;
             margin-top: -80px;
-            transition: opacity 1.5s ease-in-out; 
+            transition: opacity 0.5s ease-in-out; 
+            opacity: 0; /* V základu neviditelné */
+            z-index: 1;
         }
 
-        .img-front { opacity: 1; z-index: 2; }
-        .img-back { opacity: 0; z-index: 1; }
+        /* --- LOGIKA ZOBRAZOVÁNÍ FOTEK PŘES CSS --- */
+        body:not(.light-theme) .photo-container:not(.swapped) .dark-img.img-front { opacity: 1; z-index: 2; }
+        body:not(.light-theme) .photo-container.swapped .dark-img.img-back { opacity: 1; z-index: 2; }
 
-        .photo-container.swapped .img-front { opacity: 0; }
-        .photo-container.swapped .img-back { opacity: 1; z-index: 3; }
+        body.light-theme .photo-container:not(.swapped) .light-img.img-front { opacity: 1; z-index: 2; }
+        body.light-theme .photo-container.swapped .light-img.img-back { opacity: 1; z-index: 2; }
 
         footer {
             height: 50px; 
@@ -489,10 +698,11 @@
 
     </style>
 </head>
-<body>
+<body class="light-theme">
 
     <header class="solid-lista">
         <h1 id="signature">Artur Kaiser Junior</h1>
+        <button id="themeToggle" class="theme-toggle">🌙</button>
     </header>
 
     <main>
@@ -501,7 +711,7 @@
             <a href="#" class="glass-btn" data-target="zasebou">Co mám za sebou</a>
             <a href="#" class="glass-btn" data-target="prace">Práce, kterou hledám</a>
             <a href="#" class="glass-btn" data-target="silne">Mé silné stránky</a>
-            <a href="#" class="glass-btn" data-target="vizitka">Vizitka</a>
+            <a href="#" class="glass-btn" data-target="vizitka" id="btn-vizitka">Kontakt</a>
             <a href="#" class="glass-btn" data-target="zaver">Závěr</a>
             <a href="#" class="glass-btn" data-target="prohr">Pro HR</a>
         </div>
@@ -512,17 +722,12 @@
             </div>
             
             <div class="card-container" id="cardBox">
+                <!-- Tmavý motiv: Kreditka -->
                 <div class="credit-card">
                     <div class="card-dollar-chains">
-                        <div class="chain">
-                            <span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span>
-                        </div>
-                        <div class="chain">
-                            <span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span>
-                        </div>
-                        <div class="chain">
-                            <span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span>
-                        </div>
+                        <div class="chain"><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span></div>
+                        <div class="chain"><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span></div>
+                        <div class="chain"><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span><span>$</span></div>
                     </div>
                     
                     <div class="card-king">&#9812;</div>
@@ -541,12 +746,22 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Světlý motiv: Textový kontakt -->
+                <div class="contact-plain">
+                    <h2>Kontakt</h2>
+                    <p><strong>Telefon:</strong> +420 799 919 042</p>
+                    <p><strong>E-mail:</strong> artur.kaiser.fs@gmail.com</p>
+                    <p><strong>Dostupný od:</strong> 16:00</p>
+                </div>
             </div>
         </div>
 
         <div class="photo-container" id="photoArea">
-            <img src="fotky/me.fix.png" alt="Artur Kaiser Junior 1" class="photo-img img-front">
-            <img src="fotky/me.fix2.png" alt="Artur Kaiser Junior 2" class="photo-img img-back">
+            <img src="fotky/me.fix.png" alt="Artur Dark 1" class="photo-img dark-img img-front" id="imgFrontDark">
+            <img src="fotky/me.fix2.png" alt="Artur Dark 2" class="photo-img dark-img img-back" id="imgBackDark">
+            <img src="fotky/me.light.png" alt="Artur Light 1" class="photo-img light-img img-front" id="imgFrontLight">
+            <img src="fotky/me.light2.png" alt="Artur Light 2" class="photo-img light-img img-back" id="imgBackLight">
         </div>
     </main>
 
@@ -762,9 +977,47 @@
         const contentTextDiv = document.getElementById('contentTextDiv');
         const cardBox = document.getElementById('cardBox');
         const buttons = document.querySelectorAll('.glass-btn[data-target]');
+        const btnVizitka = document.getElementById('btn-vizitka');
         
         const contactCounter = document.getElementById('contactCounter');
         const viewCounter = document.getElementById('viewCounter');
+        const themeToggle = document.getElementById('themeToggle');
+
+        // Kontrola motivu po startu (Výchozí je SVĚTLÝ)
+        const savedTheme = localStorage.getItem('cv_theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.remove('light-theme');
+            themeToggle.innerText = '☀️';
+            btnVizitka.innerText = 'Vizitka';
+        } else {
+            themeToggle.innerText = '🌙';
+            btnVizitka.innerText = 'Kontakt';
+        }
+
+        // 100% BEZCHYBNÉ PŘEPÍNÁNÍ PŘES PROLNUTÍ (FADE-IN)
+        themeToggle.addEventListener('click', () => {
+            // Vnutíme 1s transition na barvy a stíny celého webu
+            document.body.classList.add('theme-transition');
+            
+            // Přepneme CSS témata
+            document.body.classList.toggle('light-theme');
+            const isLight = document.body.classList.contains('light-theme');
+            
+            if (isLight) {
+                themeToggle.innerText = '🌙';
+                btnVizitka.innerText = 'Kontakt';
+                localStorage.setItem('cv_theme', 'light');
+            } else {
+                themeToggle.innerText = '☀️';
+                btnVizitka.innerText = 'Vizitka';
+                localStorage.setItem('cv_theme', 'dark');
+            }
+
+            // Počkáme 1s na konec animace a třídu smažeme, aby nerušila zbytek webu (např. hover na tlačítkách)
+            setTimeout(() => {
+                document.body.classList.remove('theme-transition');
+            }, 1000);
+        });
 
         const namespace = 'arturkaiser-cv-2607';
 
