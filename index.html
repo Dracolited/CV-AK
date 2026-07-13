@@ -14,7 +14,7 @@
             --tmavy-kov: #3B3B3B;
         }
 
-        /* --- ZÁKLADNÍ DOM: LUXUSNÍ TMAVÉ POZADÍ JE ZPĚT --- */
+        /* --- ZÁKLADNÍ DOM: LUXUSNÍ TMAVÉ POZADÍ --- */
         body, html {
             margin: 0;
             padding: 0;
@@ -35,7 +35,6 @@
             box-shadow: inset 0 0 150px rgba(0,0,0,0.9);
             color: white;
             overflow-x: hidden;
-            position: relative;
         }
 
         /* --- SVĚTLÁ PLACHTA, KTERÁ PLYNULE PŘEKRYJE TMU --- */
@@ -378,65 +377,6 @@
             font-weight: bold;
         }
 
-        .motto {
-            font-style: italic;
-            color: var(--zlato) !important;
-            border-left: 3px solid var(--zlato);
-            padding-left: 15px;
-            margin-top: 30px;
-        }
-
-        .hr-nav {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            border-bottom: 1px solid rgba(220, 190, 92, 0.2);
-            padding-bottom: 15px;
-        }
-
-        .hr-btn {
-            background: rgba(220, 190, 92, 0.05);
-            border: 1px solid rgba(220, 190, 92, 0.5);
-            color: var(--zlato);
-            padding: 10px 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-        }
-
-        .hr-btn:hover, .hr-btn.active-sub {
-            background: var(--zlato);
-            color: #111;
-            box-shadow: 0 0 15px rgba(220, 190, 92, 0.4);
-        }
-
-        .hr-content-section {
-            display: none;
-            animation: fadeIn 0.4s ease;
-        }
-
-        .hr-content-section.active-subcontent {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .content-container::-webkit-scrollbar { width: 6px; }
-        .content-container::-webkit-scrollbar-track { background: transparent; }
-        .content-container::-webkit-scrollbar-thumb {
-            background: rgba(220, 190, 92, 0.3);
-            border-radius: 10px;
-        }
-        .content-container::-webkit-scrollbar-thumb:hover { background: var(--zlato); }
-
         /* KARTY A INFO */
         .card-container {
             position: absolute;
@@ -658,7 +598,7 @@
             object-fit: cover;
             margin-top: -80px;
             transition: opacity 0.5s ease-in-out; 
-            opacity: 0; /* V základu neviditelné */
+            opacity: 0; 
             z-index: 1;
         }
 
@@ -695,9 +635,9 @@
             letter-spacing: 2px;
         }
 
-        /* ========================================= */
-        /* --- MOBILNÍ VERZE (RESPONZIVITA) --- */
-        /* ========================================= */
+        /* ======================================================= */
+        /* --- HARDCORE RESPONZIVITA PRO MOBILY (ACCORDION FIX) --- */
+        /* ======================================================= */
         
         @media (max-width: 1200px) {
             body, html {
@@ -708,44 +648,90 @@
                 flex-direction: column;
                 align-items: center;
                 padding: 20px 15px;
-                gap: 40px;
+                gap: 25px;
             }
             .buttons-column {
                 width: 100%;
                 max-width: 500px;
+                gap: 15px; /* Menší mezery pro mobilní accordion */
             }
+            
+            /* KLÍČOVÝ FIX: Změna chování hlavního boxu na mobilní harmoniku */
             .middle-column {
-                width: 100%;
-                max-width: 700px;
-                height: 600px; /* Obsah se roluje uvnitř */
+                width: 100% !important;
+                max-width: 100% !important;
+                height: auto !important; /* Roste dynamicky s textem */
+                position: relative !important;
+                overflow: visible !important;
+                margin: 0;
+                display: none; /* Skryto, pokud není nic aktivní */
+                order: unset;
             }
+            .middle-column.has-active {
+                display: block;
+                margin-top: 10px;
+                margin-bottom: 20px;
+            }
+            
+            .content-container {
+                position: relative !important;
+                top: auto; left: auto; right: auto; bottom: auto;
+                transform: none !important; /* Vypnutí bočního slide efektu na mobilu */
+                opacity: 0;
+                display: none;
+                padding: 25px 20px;
+            }
+            .content-container.active {
+                display: block;
+                opacity: 1;
+            }
+
+            .card-container {
+                position: relative !important;
+                top: auto; left: auto; right: auto; bottom: auto;
+                opacity: 0;
+                display: none;
+                width: 100%;
+            }
+            .card-container.active {
+                display: flex;
+                opacity: 1;
+            }
+
+            /* ROBUSTNÍ FIX MOBILNÍCH FOTEK */
             .photo-container {
                 width: 100%;
-                max-width: 500px;
-                height: 600px;
-                margin-top: 0;
+                max-width: 400px;
+                height: 450px;
+                margin-top: 20px;
+                position: relative !important;
+                overflow: hidden !important;
+                display: block !important;
             }
             .photo-img {
-                margin-top: 0;
-                height: 100%;
+                margin-top: 0 !important;
+                height: 100% !important;
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
             }
             h1 {
-                font-size: 4rem;
-                padding: 0 20px;
+                font-size: 3.5rem;
+                padding: 0 15px;
             }
         }
 
         @media (max-width: 768px) {
             h1 {
-                font-size: 2.8rem;
-                margin-top: 15px;
+                font-size: 2.5rem;
+                margin-top: 10px;
                 line-height: 1.2;
             }
             header {
                 flex-direction: column;
                 padding: 15px 0;
                 height: auto;
-                min-height: 100px;
+                min-height: 90px;
             }
             .theme-toggle {
                 position: absolute;
@@ -755,14 +741,7 @@
                 height: 45px;
             }
             
-            .middle-column {
-                height: 500px;
-            }
-            .content-container {
-                padding: 25px 20px;
-            }
-            
-            /* Přeškálování kreditní karty na mobil přes VW */
+            /* Přeškálování kreditní karty */
             .credit-card {
                 width: 90vw;
                 height: 56vw;
@@ -777,23 +756,22 @@
             .card-chip { width: 12vw; height: 9vw; }
             .chain span { font-size: 10vw; gap: 5vw; }
             
-            /* Přeškálování textového kontaktu */
             .contact-plain {
-                width: 90%;
-                padding: 30px 20px;
+                width: 100%;
+                box-sizing: border-box;
+                padding: 30px 15px;
             }
-            .contact-plain h2 { font-size: 2rem; }
+            .contact-plain h2 { font-size: 1.8rem; }
             .contact-plain p { font-size: 1.1rem; }
 
-            /* Patička pod sebou */
             footer {
                 flex-direction: column;
                 height: auto;
                 padding: 15px 0;
-                gap: 10px;
+                gap: 8px;
             }
-            .stat-box { font-size: 0.9rem; }
-            .stat-value { font-size: 1.2rem; }
+            .stat-box { font-size: 0.85rem; }
+            .stat-value { font-size: 1.1rem; }
         }
     </style>
 </head>
@@ -958,7 +936,7 @@
                     <h2>Kde je ten háček?</h2>
                     <p>Předpokládám, že při čtení mého profilu vám v hlavě vyskočil varovný signál s nápisem „rychlé vyhoření“. Je to z pohledu personalistiky logická a oprávněná obava. Rád bych proto dodal kontext k tomu, proč je můj výkon dlouhodobě udržitelný.</p>
                     
-                    <p>V mém posledním zaměstnání jsem strávil 4 roky. Abych udržel provoz v chodu, byl jsem v práci 363 dní v roce (s výjimkou Vánoc a narozenin). Fungoval jsem v extrémně asymetrickém provozu – některé týdny vyžadovaly 3hodinové zásahy, jiné znamenaly 20hodinové směny (byť s občasnými krátkými pauzami), které byly permanentně spojené s 24/7 telefonickou pohotovostí pro řešení kritických incidentů.</p>
+                    <p>V mém posledním zaměstnání jsem stráviv 4 roky. Abych udržel provoz v chodu, byl jsem v práci 363 dní v roce (s výjimkou Vánoc a narozenin). Fungoval jsem v extrémně asymetrickém provozu – některé týdny vyžadovaly 3hodinové zásahy, jiné znamenaly 20hodinové směny (byť s občasnými krátkými pauzami), které byly permanentně spojené s 24/7 telefonickou pohotovostí pro řešení kritických incidentů.</p>
                     
                     <p>Dlouhodobě se to dalo zvládnout díky třem faktorům:</p>
                     
@@ -1079,6 +1057,9 @@
         const contactCounter = document.getElementById('contactCounter');
         const viewCounter = document.getElementById('viewCounter');
         const themeToggle = document.getElementById('themeToggle');
+        
+        const middleColumn = document.querySelector('.middle-column');
+        const buttonsColumn = document.querySelector('.buttons-column');
 
         // Kontrola motivu po startu (Výchozí je SVĚTLÝ)
         const savedTheme = localStorage.getItem('cv_theme');
@@ -1091,12 +1072,9 @@
             btnVizitka.innerText = 'Kontakt';
         }
 
-        // 100% BEZCHYBNÉ PŘEPÍNÁNÍ PŘES PROLNUTÍ (FADE-IN)
+        // PŘEPÍNÁNÍ MOTIVU (1s Crossfade)
         themeToggle.addEventListener('click', () => {
-            // Vnutíme 1s transition na barvy a stíny
             document.body.classList.add('theme-transition');
-            
-            // Prohodíme třídu motivu
             document.body.classList.toggle('light-theme');
             const isLight = document.body.classList.contains('light-theme');
             
@@ -1110,7 +1088,6 @@
                 localStorage.setItem('cv_theme', 'dark');
             }
 
-            // Počkáme 1s na konec animace a třídu smažeme, aby nerušila zbytek webu
             setTimeout(() => {
                 document.body.classList.remove('theme-transition');
             }, 1000);
@@ -1161,6 +1138,7 @@
                 if (isCurrentlyActive) {
                     contentBox.classList.remove('active');
                     cardBox.classList.remove('active');
+                    middleColumn.classList.remove('has-active');
                     return;
                 }
 
@@ -1168,9 +1146,19 @@
                 contentBox.classList.remove('active');
                 cardBox.classList.remove('active');
 
-                const delay = anythingActive ? 800 : 0;
+                // DYNAMICKÝ PŘESUN PRO MOBILNÍ ACCORDION
+                if (window.innerWidth <= 1200) {
+                    btn.after(middleColumn);
+                } else {
+                    // Na PC vrátíme blok zpět do původní struktury
+                    buttonsColumn.after(middleColumn);
+                }
+
+                // Pouze na desktopu čekáme na dojetí slide animace
+                const delay = (anythingActive && window.innerWidth > 1200) ? 800 : 0;
 
                 setTimeout(() => {
+                    middleColumn.classList.add('has-active');
                     if (target === 'vizitka') {
                         cardBox.classList.add('active');
                         
@@ -1184,6 +1172,13 @@
                     } else {
                         contentTextDiv.innerHTML = texts[target];
                         contentBox.classList.add('active');
+                    }
+
+                    // Na mobilu automaticky odrolujeme na začátek textu, ať to uživatel hned vidí
+                    if (window.innerWidth <= 1200) {
+                        setTimeout(() => {
+                            btn.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 50);
                     }
                 }, delay);
             });
